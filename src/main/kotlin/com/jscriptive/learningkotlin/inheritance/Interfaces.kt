@@ -17,7 +17,7 @@ interface Interfaces2 : Interfaces1 {
 
 open class Somethings1 : Interfaces2 {
     override val number1: Int = 42
-    //get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    //get() = 42
     override val number2: Int = 42
 
     override fun func1(str: String): String {
