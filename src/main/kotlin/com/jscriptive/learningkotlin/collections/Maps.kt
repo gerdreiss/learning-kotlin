@@ -7,6 +7,8 @@ fun main(args: Array<String>) {
             2 to "Infiniti",
             3 to "Honda"
     )
+    // does not compile -> immutable!
+    //immutableMap[4] = "Corvette"
 
     println(immutableMap)
     println(immutableMap.javaClass)
@@ -16,7 +18,7 @@ fun main(args: Array<String>) {
             2 to "Honda",
             3 to "Nissan"
     )
-    mutableMap.put(4, "Corvette")
+    mutableMap[4] = "Corvette"
 
     println(mutableMap)
     println(mutableMap.javaClass)
@@ -31,9 +33,9 @@ fun main(args: Array<String>) {
         println(v)
     }
 
-    //val car = Car("Ford","Capri",1980)
-    //val (brand, model, year) = car
-    //println("${year}er $brand $model")
+    val car = Car("Ford","Capri",1980)
+    val (carBrand, carModel, carYear) = car
+    println("${carYear}er $carBrand $carModel")
 
 
     val vehicle = Vehicle("Ford", "Capri", 1980)
@@ -41,7 +43,7 @@ fun main(args: Array<String>) {
     println("${year}er $brand $model")
 }
 
-class Car(val brand: String, val model: String, val year: Int) {
+class Car(private val brand: String, private val model: String, private val year: Int) {
     operator fun component1() = brand
     operator fun component2() = model
     operator fun component3() = year

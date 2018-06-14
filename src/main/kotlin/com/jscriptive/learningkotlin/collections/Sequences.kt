@@ -7,9 +7,9 @@ fun main(args: Array<String>) {
     // lazy evaluation, like streams in Java
     val filtered = ints.asSequence()
             .filter { it % 1000 == 1 }
-            .map { "got $it" }
-            .map { it.reversed() }
-            .map { it.take(2) }
+               .map { "got $it"      }
+               .map { it.reversed()  }
+               .map { it.take(2)  }
             .toSet()
     println(filtered)
 }
