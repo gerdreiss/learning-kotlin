@@ -31,6 +31,7 @@ repositories {
 dependencies {
     compile(kotlinModule("stdlib-jdk8", kotlin_version))
     testCompile("junit", "junit", "4.12")
+    testCompile ("org.jetbrains.kotlin", "kotlin-test-junit", kotlin_version)
 }
 
 configure<JavaPluginConvention> {
