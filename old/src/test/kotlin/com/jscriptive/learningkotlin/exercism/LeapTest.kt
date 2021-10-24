@@ -1,8 +1,7 @@
 package com.jscriptive.learningkotlin.exercism
 
+import org.junit.Assert.*
 import org.junit.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class LeapTest {
 

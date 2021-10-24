@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
 
     val something: Any = BigDecimal("1.2")
     val eval: Any = when (something) {
-        is String -> something.toUpperCase()
+        is String -> something.uppercase()
         is BigDecimal -> something.remainder(BigDecimal.ONE)
         is Int -> "${something - 1}"
         else -> "Huh?"

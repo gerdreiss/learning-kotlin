@@ -1,8 +1,7 @@
 package com.jscriptive.learningkotlin.exercism
 
 import org.junit.Test
-import org.junit.Ignore
-import kotlin.test.assertEquals
+import org.junit.Assert.*
 
 class RnaTranscriptionTest {
 

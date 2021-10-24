@@ -1,3 +1,3 @@
 package com.jscriptive.learningkotlin.exercism
 
-fun twofer(s: String) = "One for $s, one for me."
+fun twofer(s: String = "you") = "One for $s, one for me."

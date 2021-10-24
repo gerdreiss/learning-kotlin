@@ -50,7 +50,8 @@ fun main() {
     println(mySequence()
         .map { it * it }
         .filter { it > 10 }
-        .take(1))
+        .take(1)
+        .joinToString(" "))
     println()
     println()
     println()

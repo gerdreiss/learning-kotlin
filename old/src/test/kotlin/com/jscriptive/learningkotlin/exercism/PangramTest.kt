@@ -1,9 +1,7 @@
 package com.jscriptive.learningkotlin.exercism
 
+import org.junit.Assert.*
 import org.junit.Test
-import org.junit.Ignore
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class PangramTest {
 

@@ -3,7 +3,7 @@ package com.jscriptive.learningkotlin.exercism
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import kotlin.test.assertEquals
+import org.junit.Assert.*
 
 @RunWith(Parameterized::class)
 class RaindropsTest(val input: Int, val expectedOutput: String) {

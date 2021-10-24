@@ -1,7 +1,7 @@
 package com.jscriptive.learningkotlin.exercism
 
 import org.junit.Test
-import kotlin.test.assertEquals
+import org.junit.Assert.*
 
 class TwoferTest {
 

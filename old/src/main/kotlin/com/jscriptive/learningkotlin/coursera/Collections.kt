@@ -17,7 +17,7 @@ val heroes = listOf(
 
 fun main() {
     val mapByAge: Map<Int, List<Hero>> = heroes.groupBy { it.age }
-    val (age, _) = mapByAge.maxBy { (_, group) ->
+    val (age, _) = mapByAge.maxByOrNull { (_, group) ->
         group.size
     }!!
     println(age)

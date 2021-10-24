@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
     println(seasons.last())
     println(seasons.reversed())
     println(seasons.getOrElse(5) { "None" })
-    println(colors.max())
+    println(colors.maxOrNull())
     println(seasons.zip(colors))
 
     val merged = listOf(*seasons.toTypedArray(), *colors.toTypedArray())
