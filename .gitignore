@@ -1,4 +1,6 @@
-.gradle
-.idea
+.gradle/
+.idea/
+target/
+*.iml
 build
 out
