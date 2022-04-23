@@ -58,3 +58,12 @@ fun <A> List<Option<A>>.sequence(): Option<List<A>> =
     fold(Some(listOf())) { acc, maybeA ->
         acc.flatMap { maybeA.map { a -> it + a } }
     }
+
+fun <A> List<A>.traverse(f: (A) -> Option<A>): Option<List<A>> =
+    fold(Some(listOf())) { acc, a ->
+        f(a).flatMap { acc.map { it + a } }
+    }
+
+fun main() {
+    println(listOf(1, 2, 3).traverse<Int> { Some(it) })
+}

@@ -2,6 +2,8 @@ package fpinkotlin
 
 import arrow.core.Either
 import arrow.core.Option
+import arrow.core.continuations.either
+import arrow.core.continuations.option
 import arrow.core.getOrElse
 import fpinkotlin.chapter02.abs
 import fpinkotlin.chapter02.fac
@@ -11,7 +13,33 @@ import fpinkotlin.chapter02.formatResult
 import java.nio.file.Files
 import java.nio.file.Paths
 
-fun main(args: Array<String>) {
+suspend fun <A, B, C, D> options(
+    oa: Option<A>,
+    ob: Option<B>,
+    oc: Option<C>,
+    f: (A, B, C) -> D
+): Option<D> =
+    option {
+        val a = oa.bind()
+        val b = ob.bind()
+        val c = oc.bind()
+        f(a, b, c)
+    }
+
+suspend fun <A, B, C, D, E> eithers(
+    eae: Either<E, A>,
+    ebe: Either<E, B>,
+    ece: Either<E, C>,
+    f: (A, B, C) -> D
+): Either<E, D> =
+    either {
+        val a = eae.bind()
+        val b = ebe.bind()
+        val c = ece.bind()
+        f(a, b, c)
+    }
+
+suspend fun main(args: Array<String>) {
     Either
         .catch { Files.list(Paths.get(".")) }
         .fold(
@@ -40,5 +68,24 @@ fun main(args: Array<String>) {
     println(formatResult("absolute value", -10) { n -> if (n < 0) -n else n })
     println(formatResult("absolute value", -10, ::abs))
     println(formatResult("factorial", 10, ::factorial))
+
+    println("=".repeat(50))
+    println(
+        options(
+            Option.fromNullable(1),
+            Option.fromNullable(2),
+            Option.fromNullable(3)
+        ) { a, b, c -> a + b + c }
+    )
+
+    println("=".repeat(50))
+    println(
+        eithers(
+            Either.fromNullable(1),
+            Either.fromNullable(2),
+            Either.fromNullable(3)
+        ) { a, b, c -> a + b + c }
+    )
+
 
 }
