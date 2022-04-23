@@ -56,9 +56,5 @@ fun <A, B, C> map2(maybeA: Option<A>, maybeB: Option<B>, f: (A, B) -> C): Option
 
 fun <A> List<Option<A>>.sequence(): Option<List<A>> =
     fold(Some(listOf())) { acc, maybeA ->
-        acc.flatMap { accList ->
-            maybeA.map { a ->
-                accList + a
-            }
-        }
+        acc.flatMap { maybeA.map { a -> it + a } }
     }
