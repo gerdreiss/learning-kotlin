@@ -1,6 +1,8 @@
 package fpinkotlin
 
 import arrow.core.Either
+import arrow.core.Option
+import arrow.core.getOrElse
 import fpinkotlin.chapter02.abs
 import fpinkotlin.chapter02.fac
 import fpinkotlin.chapter02.factorial
@@ -21,6 +23,14 @@ fun main(args: Array<String>) {
                     .orElse(".")
                 println(files)
             })
+
+    println("=".repeat(50))
+
+    Option
+        .fromNullable(null as String?)
+        .map { it.length }
+        .getOrElse { 0 }
+        .let { println(it) }
 
     println("=".repeat(50))
     println(fac(10))

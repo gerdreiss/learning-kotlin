@@ -1,5 +1,10 @@
 package fpinkotlin.chapter03
 
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.Some
+import kotlin.math.pow
+
 sealed class List<out A> {
     companion object {
         fun <A> of(vararg `as`: A): List<A> = `as`.foldRight(Nil as List<A>, ::Cons)
@@ -12,7 +17,7 @@ object Nil : List<Nothing>()
 data class Cons<out A>(val head: A, val tail: List<A>) : List<A>()
 
 /**
- * EXTENSION FUNCTIONS
+ * Extension methods for generic lists
  */
 
 tailrec fun <A, B> List<A>.foldLeft(z: B, f: (B, A) -> B): B =
@@ -38,19 +43,6 @@ fun <A> List<A>.lengthR(): Int =
 
 fun <A> List<A>.lengthL(): Int =
     this.foldLeft(0) { acc, _ -> acc + 1 }
-
-fun List<Int>.sumR(): Int =
-    this.foldRight(0) { a, acc -> a + acc }
-
-fun List<Int>.sumL(): Int =
-    this.foldRight(0) { acc, a -> acc + a }
-
-fun List<Int>.productR(): Int =
-    this.foldRight(1) { a, acc -> a * acc }
-
-fun List<Int>.productL(): Int =
-    this.foldRight(1) { acc, a -> acc * a }
-
 
 fun <A> List<A>.head(): A = when (this) {
     is Nil -> throw IllegalStateException("head called on an empty list")
@@ -91,6 +83,43 @@ fun <A> List<A>.dropWhile(p: (A) -> Boolean): List<A> =
         is Nil -> this
         is Cons -> if (p(head)) tail.dropWhile(p) else this
     }
+
+fun <A, B> List<A>.map(f: (A) -> B): List<B> =
+    when (this) {
+        is Nil -> Nil
+        is Cons -> Cons(f(head), tail.map(f))
+    }
+
+/**
+ * Extension functions for lists of numbers
+ */
+
+fun List<Int>.sumR(): Int =
+    this.foldRight(0) { a, acc -> a + acc }
+
+fun List<Int>.sumL(): Int =
+    this.foldRight(0) { acc, a -> acc + a }
+
+fun List<Int>.productR(): Int =
+    this.foldRight(1) { a, acc -> a * acc }
+
+fun List<Int>.productL(): Int =
+    this.foldRight(1) { acc, a -> acc * a }
+
+fun List<Double>.sum(): Double =
+    this.foldRight(0.0) { a, acc -> a + acc }
+
+fun List<Double>.mean(): Option<Double> =
+    when (this) {
+        is Nil -> None
+        is Cons -> Some(sum() / lengthR())
+    }
+
+fun List<Double>.variance(): Option<Double> =
+    mean().map { m ->
+        this.map { x -> (x - m).pow(2.0) }.sum() / lengthR()
+    }
+
 
 fun main(args: Array<String>) {
     val nums = List.of(1, 2, 3, 4, 5)
