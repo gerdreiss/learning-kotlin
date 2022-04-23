@@ -10,6 +10,10 @@ object Nil : List<Nothing>()
 
 data class Cons<out A>(val head: A, val tail: List<A>) : List<A>()
 
+/**
+ * EXTENSION FUNCTIONS
+ */
+
 fun <A> List<A>.head(): A = when (this) {
     is Nil -> throw IllegalStateException("head called on an empty list")
     is Cons -> head
