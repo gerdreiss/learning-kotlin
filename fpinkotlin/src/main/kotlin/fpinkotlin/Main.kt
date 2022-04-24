@@ -10,6 +10,8 @@ import fpinkotlin.chapter02.fac
 import fpinkotlin.chapter02.factorial
 import fpinkotlin.chapter02.factr
 import fpinkotlin.chapter02.formatResult
+import fpinkotlin.chapter04.map
+import fpinkotlin.chapter04.mkAge
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -52,6 +54,15 @@ suspend fun main(args: Array<String>) {
                 println(files)
             })
 
+    println("=".repeat(50))
+
+    mkAge(10).also { println(it) }
+    mkAge(10).apply { println(this) }
+
+    println("=".repeat(50))
+    println(with(mkAge(10)) {
+        map { it.copy(value = it.value + 2) }
+    })
     println("=".repeat(50))
 
     Option

@@ -21,6 +21,11 @@ data class Cons<out A>(val head: A, val tail: List<A>) : List<A>()
  */
 
 tailrec fun <A, B> List<A>.foldLeft(z: B, f: (B, A) -> B): B =
+// Scala is still unbeatable ;)
+//this match {
+//    case Nil    => z
+//    case h :: t => t.foldLeft(f(z, h), f)
+    //}
     when (this) {
         is Nil -> z
         is Cons -> tail.foldLeft(f(z, head), f)
@@ -98,13 +103,13 @@ fun List<Int>.sumR(): Int =
     this.foldRight(0) { a, acc -> a + acc }
 
 fun List<Int>.sumL(): Int =
-    this.foldRight(0) { acc, a -> acc + a }
+    this.foldLeft(0) { a, acc -> acc + a }
 
 fun List<Int>.productR(): Int =
     this.foldRight(1) { a, acc -> a * acc }
 
 fun List<Int>.productL(): Int =
-    this.foldRight(1) { acc, a -> acc * a }
+    this.foldLeft(1) { a, acc -> acc * a }
 
 fun List<Double>.sum(): Double =
     this.foldRight(0.0) { a, acc -> a + acc }
