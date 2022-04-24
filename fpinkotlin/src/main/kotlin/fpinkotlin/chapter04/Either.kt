@@ -3,7 +3,7 @@ package fpinkotlin.chapter04
 import kotlin.random.Random
 
 sealed class Either<out E, out A>
-data class Left<out E>(val value: E) : Either<E, Nothing>()
+data class Left<out E>(val error: E) : Either<E, Nothing>()
 data class Right<out A>(val value: A) : Either<Nothing, A>()
 
 fun <E, A, B> Either<E, A>.map(f: (A) -> B): Either<E, B> =
@@ -32,11 +32,11 @@ fun <A, B, C, E> map2(
 ): Either<List<E>, C> =
     when (maybeA) {
         is Left -> when (maybeB) {
-            is Left -> Left(listOf(maybeA.value, maybeB.value))
-            is Right -> Left(listOf(maybeA.value))
+            is Left -> Left(listOf(maybeA.error, maybeB.error))
+            is Right -> Left(listOf(maybeA.error))
         }
         is Right -> when (maybeB) {
-            is Left -> Left(listOf(maybeB.value))
+            is Left -> Left(listOf(maybeB.error))
             is Right -> Right(f(maybeA.value, maybeB.value))
         }
     }
@@ -66,7 +66,7 @@ fun main() {
         else Left("Error")
 
     when (maybePerson) {
-        is Left -> println(maybePerson.value)
+        is Left -> println(maybePerson.error)
         is Right -> println("Person named ${maybePerson.value.name.value} aged ${maybePerson.value.age.value}")
     }
 

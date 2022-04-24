@@ -41,7 +41,13 @@ suspend fun <A, B, C, D, E> eithers(
         f(a, b, c)
     }
 
-suspend fun main(args: Array<String>) {
+inline fun <reified T> membersOf() = T::class.members
+
+suspend fun main(s: Array<String>) {
+    println("=".repeat(50))
+    println(membersOf<StringBuilder>().joinToString("\n"))
+    println("=".repeat(50))
+
     Either
         .catch { Files.list(Paths.get(".")) }
         .fold(
