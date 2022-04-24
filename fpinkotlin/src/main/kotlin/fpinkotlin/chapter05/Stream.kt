@@ -30,6 +30,12 @@ fun <A> Stream<A>.headOption(): Option<A> =
         is Cons -> Some(this.head())
     }
 
+fun <A> Stream<A>.headOptionViaFoldRight(): Option<A> =
+    foldRight(
+        { None as Option<A> },
+        { a, _ -> Some(a) }
+    )
+
 fun <A> Stream<A>.toListUnsafe(): List<A> =
     when (this) {
         is Empty -> listOf()
@@ -60,3 +66,50 @@ fun <A> Stream<A>.takeWhile(p: (A) -> Boolean): Stream<A> =
             if (p(head())) Stream.cons(head) { tail().takeWhile(p) }
             else Stream.empty()
     }
+
+fun <A> Stream<A>.takeWhileViaFoldRight(p: (A) -> Boolean): Stream<A> =
+    foldRight({ Stream.empty() }) { a, acc ->
+        if (p(a)) Stream.cons({ a }, { acc().takeWhileViaFoldRight(p) })
+        else Stream.empty()
+    }
+
+fun <A, B> Stream<A>.foldRight(
+    z: () -> B,
+    f: (A, () -> B) -> B
+): B =
+    when (this) {
+        is Cons -> f(this.head()) {
+            tail().foldRight(z, f)
+        }
+        is Empty -> z()
+    }
+
+fun <A> Stream<A>.exists(p: (A) -> Boolean): Boolean =
+    foldRight({ false }) { a, b -> p(a) || b() }
+
+fun <A> Stream<A>.forAll(p: (A) -> Boolean): Boolean =
+    foldRight({ true }) { a, b -> p(a) && b() }
+
+fun <A, B> Stream<A>.map(f: (A) -> B): Stream<B> =
+    foldRight({ Stream.empty() }) { a, b ->
+        Stream.cons({ f(a) }, { b() })
+    }
+
+fun <A> Stream<A>.filter(p: (A) -> Boolean): Stream<A> =
+    foldRight({ Stream.empty() }) { a, b ->
+        if (p(a)) Stream.cons({ a }, { b() })
+        else b()
+    }
+
+fun <A> Stream<A>.append(s: Stream<A>): Stream<A> =
+    foldRight({ s }) { a, b ->
+        Stream.cons({ a }, { b() })
+    }
+
+fun <A, B> Stream<A>.flatMap(f: (A) -> Stream<B>): Stream<B> =
+    foldRight({ Stream.empty() }) { a, b ->
+        f(a).append(b())
+    }
+
+
+
