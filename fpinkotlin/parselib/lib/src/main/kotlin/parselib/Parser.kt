@@ -37,6 +37,15 @@ interface Parsers<PE> {
 
     infix fun <A, B> Parser<A>.product(pb: Parser<B>): Parser<Pair<A, B>>
 
+    fun <A, B, C> map2(
+        pa: Parser<A>,
+        pb: () -> Parser<B>,
+        f: (A, B) -> C
+    ): Parser<C> =
+        pa.product(pb()).map { (a, b) -> f(a, b) }
+
+    fun <A> many1(p: Parser<A>): Parser<List<A>> =
+        p.many()
 }
 
 //abstract class Laws : Parsers<ParseError> {
