@@ -6,6 +6,8 @@ object ParseError
 
 interface Parser<A>
 
+infix fun <T> T.cons(ts: List<T>): List<T> = listOf(this) + ts
+
 interface Parsers<PE> {
 
     fun <A> run(p: Parser<A>, input: String): Either<PE, A>
@@ -22,10 +24,13 @@ interface Parsers<PE> {
     infix fun String.or(other: String): Parser<String> =
         or(string(this), string(other))
 
-    fun <A> listOfN(n: Int, p: Parser<A>): Parser<List<A>>
+    fun <A> listOfN(n: Int, pa: Parser<A>): Parser<List<A>> =
+        if (n == 0) succeed(emptyList())
+        else map2(pa, { listOfN(n - 1, pa) }) { a, la -> listOf(a) + la }
 
     //fun <A> many(pa: Parser<A>): Parser<List<A>>
-    fun <A> Parser<A>.many(): Parser<List<A>>
+    fun <A> Parser<A>.many(): Parser<List<A>> =
+        map2(this, { this.many() }) { a, la -> listOf(a) + la }
 
     // fun <A, B> map(pa: Parser<A>, f: (A) -> B): Parser<B>
     fun <A, B> Parser<A>.map(f: (A) -> B): Parser<B>
